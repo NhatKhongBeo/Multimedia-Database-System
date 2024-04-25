@@ -1,6 +1,9 @@
 import cv2
 import numpy as np
 import pandas as pd
+from sklearn.cluster import KMeans
+from scipy.spatial.distance import cdist
+import pickle
 
 def average_BGR(image):
     avg_blue = image[:,:,0].mean()
@@ -17,3 +20,28 @@ def average_HSV(image):
 
     return avg_hue, avg_saturation, avg_value
 
+def cover_to_gray(image):
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    return gray
+
+def SIFT(image):
+    sift = cv2.SIFT_create()
+    _, descriptors = sift.detectAndCompute(image, None)
+    return  descriptors
+
+def kmeans_bow(all_descriptors, num_clusters):
+
+    bow_dict = []
+    kmeans = KMeans(n_clusters=num_clusters, verbose = 1).fit(all_descriptors)
+    bow_dict = kmeans.cluster_centers_
+    
+    return bow_dict
+
+def create_features_bow(single_image_descriptors, BoW, num_clusters):
+    feature = np.array([0] * num_clusters)
+    if single_image_descriptors is not None:
+        distance = cdist(single_image_descriptors, BoW, metric='euclidean')
+        argmin = np.argmin(distance, axis=1)
+        for j in argmin:
+            feature[j] += 1
+    return feature
