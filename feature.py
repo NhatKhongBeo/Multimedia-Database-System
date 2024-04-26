@@ -45,3 +45,5 @@ def create_features_bow(single_image_descriptors, BoW, num_clusters):
         for j in argmin:
             feature[j] += 1
     return feature
+
+

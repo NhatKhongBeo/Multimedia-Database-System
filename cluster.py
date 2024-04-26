@@ -6,6 +6,7 @@ import shutil
 from sklearn.cluster import KMeans
 import feature
 
+
 def kmeans_1(X, list_image_path, num_cluster=11):
 
     kmeans = KMeans(n_clusters=num_cluster,random_state =0)
@@ -55,6 +56,13 @@ def kmeans_1(X, list_image_path, num_cluster=11):
             for folder in child_folders:
                 if str(value) == folder:
                     shutil.copy(key, os.path.join(dirname, folder))
+    
+    metadata = {}
+    for i in range(len(X)):
+        metadata[tuple(X[i])] = str(pred_label[i])
+    
+    return metadata
+    
 
 def kmeans_2(folder_path, mod):
     images = []
@@ -72,14 +80,14 @@ def kmeans_2(folder_path, mod):
     kmeans_second = KMeans(n_clusters=mod,random_state =0)
     kmeans_second.fit(np.array(images))
     label = kmeans_second.predict(images)
-    
+        
     dict = {}
     for i in range((len(list_image_path))):
         dict[list_image_path[i]] = label[i]
     
 
     for i in range(mod):
-        folder_name = str(i)
+        folder_name =  str(i)
         os.mkdir(os.path.join(folder_path, folder_name))
 
     for key, value in dict.items():
@@ -103,4 +111,14 @@ def kmeans_2(folder_path, mod):
     with open(output_file, 'w') as file:
         # Ghi trung tâm của các cụm
 
-        np.savetxt(file, kmeans_second.cluster_centers_)    
+        np.savetxt(file, kmeans_second.cluster_centers_)
+    
+    last_folder = os.path.split(folder_path)[-1]
+
+    metadata = {}
+    for i in range(len(images)):
+        metadata[tuple(images[i])] = f'{last_folder}.{label[i]}'
+    
+    return metadata
+
+
