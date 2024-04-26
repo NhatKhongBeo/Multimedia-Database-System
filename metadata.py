@@ -16,7 +16,7 @@ collection = db.images
 ROOT_PATH = 'D:\PTIT\CSDLDPT\Multimedia-Database-System\Mix'
 NUM_CLUSTER = 11
 
-def main():
+def metadata():
 
     # Tạo bộ dữ liệu
     X = []
@@ -89,8 +89,5 @@ def main():
         metadata[key]['imageId'] = str(image['_id'])
 
     
-        
-            
-
-if __name__ == '__main__': 
-    main()     
+    
+metadata()
