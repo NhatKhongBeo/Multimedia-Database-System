@@ -27,7 +27,7 @@ def kmeans_1(X, list_image_path, num_cluster=11):
     output_dir = 'D:\PTIT\CSDLDPT\Multimedia-Database-System\kmeans1'
 
     if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
+        os.makedirs(output_dir)   
 
     dict = {}
 
@@ -82,7 +82,7 @@ def kmeans_2(folder_path, mod):
     output_file = os.path.join(folder_path, 'cluster_labels.txt')
 
 
-    # Mở file để ghi dữ liệu
+    # Ghi thông tin cụm
     with open(output_file, 'w') as file:
         # Ghi nhãn của từng điểm dữ liệu
         np.savetxt(file, kmeans_second.labels_, fmt='%d')
