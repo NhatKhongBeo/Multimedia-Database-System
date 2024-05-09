@@ -36,6 +36,7 @@ for dirname, _, filenames in os.walk("D:\PTIT\CSDLDPT\Multimedia-Database-System
         # X.append(avg_HSV)
 
 
+
 def cluster():
 
     props_kmeans_1 = cluster.kmeans_1(X, list_image_path, NUM_CLUSTER)

@@ -21,6 +21,7 @@ def average_HSV(image):
 
     return avg_hue, avg_saturation, avg_value
 
+
 def convert_to_gray(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     return gray
@@ -77,6 +78,8 @@ def get_feature_bow(path):
         image_features[key] = {'Bow': create_features_bow(value[0], BoW, num_clusters).tolist(),'avg_Hue': value[1][0],'avg_Saturation': value[1][1],'avg_Value': value[1][2]}
     
     return image_features
+
+
 
 
 
