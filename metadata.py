@@ -4,20 +4,21 @@ import pandas as pd
 import os
 import feature
 import cluster
-from pymongo import MongoClient
+
+# from pymongo import MongoClient
 
 
-client = MongoClient()
+# client = MongoClient()
 
-client = MongoClient("mongodb+srv://vphuong712:gtlp560j@cluster0.7nl7hqc.mongodb.net/")
-db = client.MultimediaDB
-collection = db.images
+# client = MongoClient("mongodb+srv://vphuong712:gtlp560j@cluster0.7nl7hqc.mongodb.net/")
+# db = client.MultimediaDB
+# collection = db.images
 
 
 ROOT_PATH = "D:\PTIT\CSDLDPT\Multimedia-Database-System\Mix"
 NUM_CLUSTER = 11
 
-# X = []
+X = []
 # list_avg_hue=[]
 # list_avg_saturation=[]
 # list_avg_value=[]
@@ -33,7 +34,7 @@ for dirname, _, filenames in os.walk("D:\PTIT\CSDLDPT\Multimedia-Database-System
         # list_avg_hue.append(avg_HSV[0])
         # list_avg_saturation.append(avg_HSV[1])
         # list_avg_value.append(avg_HSV[2])
-        # X.append(avg_HSV)
+        X.append(avg_HSV)
 
 
 def cluster():
@@ -75,8 +76,15 @@ def metadata():
         #     path = os.path.join(dirname, folder)
         #     dict_bow.append(feature.get_feature_bow(path))
         if len(child_folders) == 0:
-            dict_bow.append(feature.get_feature_bow(dirname))
+            list_feature_image = []
             # Ghi metadata
+            file_name = os.path.join(dirname, "metadata.txt")
+            list_image_feature = get_feature_bow(dirname)
+            if not os.path.exists(file_name):  # Sửa từ 'exits' thành 'exists'
+                # Ghi metadata vào file nếu file không tồn tại
+                with open(file_name, "w") as file:
+                    for key, value in list_image_feature.items():
+                        file.write(f"{key}: {value}\n")
 
     # for i, item in enumerate(X):
     #     (avg_Hue, avg_Saturation, avg_Value) = item
@@ -87,28 +95,28 @@ def metadata():
     #         "cluster": labels[i],
     #     }
 
-    images = collection.find({}, {"_id": 1, "path": 1})
-    images_list = list(images)
+    # images = collection.find({}, {"_id": 1, "path": 1})
+    # images_list = list(images)
 
-    for i, (key, value) in enumerate(metadata.items()):
-        image = images_list[i]
-        metadata[key]["imageId"] = str(image["_id"])
+    # for i, (key, value) in enumerate(metadata.items()):
+    #     image = images_list[i]
+    #     metadata[key]["imageId"] = str(image["_id"])
 
-    for item in dict_bow:
-        for key_item, value_item in item.items():
-            for key_meta, value_meta in metadata.items():
-                if key_item == key_meta:
-                    metadata[key_meta].update({"Bow": item[key_item]["Bow"]})
+    # for item in dict_bow:
+    #     for key_item, value_item in item.items():
+    #         for key_meta, value_meta in metadata.items():
+    #             if key_item == key_meta:
+    #                 metadata[key_meta].update({"Bow": item[key_item]["Bow"]})
 
-    for value in metadata.values():
-        cluster_folder = str(value["cluster"])
-        folder_path = os.path.join(
-            "D:\PTIT\CSDLDPT\Multimedia-Database-System\kmeans1", cluster_folder
-        )
-        file_name = f"metadata_{cluster_folder}.txt"
-        file_path = os.path.join(folder_path, file_name)
-        with open(file_path, "a") as file:
-            file.write(str(value) + "\n")
+    # for value in metadata.values():
+    #     cluster_folder = str(value["cluster"])
+    #     folder_path = os.path.join(
+    #         "D:\PTIT\CSDLDPT\Multimedia-Database-System\kmeans1", cluster_folder
+    #     )
+    #     file_name = f"metadata_{cluster_folder}.txt"
+    #     file_path = os.path.join(folder_path, file_name)
+    #     with open(file_path, "a") as file:
+    #         file.write(str(value) + "\n")
 
-        # get Bow
-    dict_bow = []
+    #     # get Bow
+    # dict_bow = []
