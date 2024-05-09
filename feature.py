@@ -51,7 +51,7 @@ def create_features_bow(single_image_descriptors, BoW, num_clusters):
 def get_feature_bow(path):
     image_features = {}
     features = []
-    list_avg_HSV = []
+    # list_avg_HSV = []
     for dirname, _, filenames in os.walk(path):
         for filename in filenames:
             if filename.lower().endswith(('.png', '.jpg', '.jpeg')):
@@ -60,7 +60,8 @@ def get_feature_bow(path):
                 avg_HSV = average_HSV(image)
                 gray = convert_to_gray(image)
                 sift = SIFT(gray)
-                image_features[avg_HSV] = [sift,avg_HSV]
+                image_features[image_path] = [sift,avg_HSV]
+                # image_features[avg_HSV] = [sift,avg_HSV,image_path]
                 for i in sift:
                     features.append(i)                
 
@@ -78,6 +79,21 @@ def get_feature_bow(path):
         image_features[key] = {'Bow': create_features_bow(value[0], BoW, num_clusters).tolist(),'avg_Hue': value[1][0],'avg_Saturation': value[1][1],'avg_Value': value[1][2]}
     
     return image_features
+
+def get_image_feature(image,folder_path):
+    gray = convert_to_gray(image)
+    sift = SIFT(gray)
+
+    file_path = os.path.join(folder_path, 'bow_dictionary.pkl')
+    
+    with open(file_path,'rb') as file:
+        BoW = pickle.load(file)
+    
+    feature = create_features_bow(sift, BoW, 50)
+    
+    return feature
+
+    
 
 
 
