@@ -64,6 +64,3 @@ def find_cluster(x):
 if __name__ == '__main__':
     print(find_cluster(load_image()))
     
-    
-    
-    a=0

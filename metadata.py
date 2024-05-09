@@ -38,7 +38,7 @@ for dirname, _, filenames in os.walk("D:\PTIT\CSDLDPT\Multimedia-Database-System
 
 
 
-def cluster():
+def clustering():
 
     props_kmeans_1 = cluster.kmeans_1(X, list_image_path, NUM_CLUSTER)
     (labels, center_values) = props_kmeans_1
@@ -80,7 +80,7 @@ def metadata():
             list_feature_image = []
             # Ghi metadata
             file_name = os.path.join(dirname, "metadata.txt")
-            list_image_feature = get_feature_bow(dirname)
+            list_image_feature = feature.get_feature_bow(dirname)
             if not os.path.exists(file_name):  # Sửa từ 'exits' thành 'exists'
                 # Ghi metadata vào file nếu file không tồn tại
                 with open(file_name, "w") as file:
@@ -121,3 +121,6 @@ def metadata():
 
     #     # get Bow
     # dict_bow = []
+
+# clustering()
+# metadata()

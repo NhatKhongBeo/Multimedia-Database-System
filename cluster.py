@@ -7,11 +7,11 @@ from sklearn.cluster import KMeans
 import feature
 from pymongo import MongoClient
 
-client = MongoClient()
+# client = MongoClient()
 
-client = MongoClient("mongodb+srv://vphuong712:gtlp560j@cluster0.7nl7hqc.mongodb.net/")
-db = client.MultimediaDB
-collection = db.images
+# client = MongoClient("mongodb+srv://vphuong712:gtlp560j@cluster0.7nl7hqc.mongodb.net/")
+# db = client.MultimediaDB
+# collection = db.images
 
 
 def kmeans_1(X, list_image_path, num_cluster=11):

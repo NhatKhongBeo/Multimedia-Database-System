@@ -65,8 +65,9 @@ def get_feature_bow(path):
                 for i in sift:
                     features.append(i)                
 
-    num_clusters = 50
-    file_path = os.path.join(os.getcwd(), 'bow_dictionary.pkl')
+    num_clusters = 30
+    # file_path = os.path.join(os.getcwd(), 'bow_dictionary.pkl')
+    file_path = os.path.join(path, 'bow_dictionary.pkl')
     if not os.path.isfile(file_path):
         BoW = kmeans_bow(features, num_clusters)
         with open(file_path, 'wb') as file:
@@ -89,7 +90,7 @@ def get_image_feature(image,folder_path):
     with open(file_path,'rb') as file:
         BoW = pickle.load(file)
     
-    feature = create_features_bow(sift, BoW, 50)
+    feature = create_features_bow(sift, BoW, 30)
     
     return feature
 
