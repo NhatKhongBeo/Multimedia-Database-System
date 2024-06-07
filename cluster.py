@@ -5,14 +5,6 @@ import os
 import shutil
 from sklearn.cluster import KMeans
 import feature
-# from pymongo import MongoClient
-
-# client = MongoClient()
-
-# client = MongoClient("mongodb+srv://vphuong712:gtlp560j@cluster0.7nl7hqc.mongodb.net/")
-# db = client.MultimediaDB
-# collection = db.images
-
 
 def kmeans_1(X, list_image_path, num_cluster=11):
 
@@ -24,7 +16,7 @@ def kmeans_1(X, list_image_path, num_cluster=11):
 
     pred_label = kmeans.predict(X)
 
-    output_dir = "D:\\Nhat\\term_8\\MDS\\src\\kmeans"
+    output_dir = "D:\\Nhat\\term_8\\MDS\\src\\kmeans2"
 
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -38,12 +30,12 @@ def kmeans_1(X, list_image_path, num_cluster=11):
         folder_name = str(i)
         os.mkdir(
             os.path.join(
-                "D:\\Nhat\\term_8\\MDS\\src\\kmeans", folder_name
+                "D:\\Nhat\\term_8\\MDS\\src\\kmeans2", folder_name
             )
         )
 
     for key, value in dict.items():
-        for dirname, child_folders, filenames in os.walk("kmeans"):
+        for dirname, child_folders, filenames in os.walk("kmeans2"):
             for folder in child_folders:
                 if str(value) == folder:
                     shutil.copy(key, os.path.join(dirname, folder))
@@ -59,7 +51,7 @@ def kmeans_2(folder_path, mod):
             image_path = os.path.join(folder_path, filename)
             list_image_path.append(image_path)
             image = cv2.imread(image_path)
-            avg_HSV = feature.average_HSV_simple(image)
+            avg_HSV = feature.average_HSV(image)
             images.append(avg_HSV)
 
     kmeans_second = KMeans(n_clusters=mod, random_state=0)
@@ -94,44 +86,3 @@ def kmeans_2(folder_path, mod):
         # Ghi trung tâm của các cụm
 
         np.savetxt(file, kmeans_second.cluster_centers_)
-
-    # # Bow
-    # dict_bow = []
-    # for dirname, child_folders, filenames in os.walk(folder_path):
-    #     sorted_child_folders = sorted(child_folders, key=lambda x: int(x))
-    #     for folder in sorted_child_folders:
-    #         path = os.path.join(dirname, folder)
-    #         dict_bow.append(feature.get_feature_bow(path))
-
-    # # Ghi metadata
-    # metadata = {}
-    # for i, item in enumerate(images):
-    #     (avg_Hue, avg_Saturation, avg_Value) = item
-    #     metadata[tuple(item)] = {
-    #         "avg_Hue": avg_Hue,
-    #         "avg_Saturation": avg_Saturation,
-    #         "avg_Value": avg_Value,
-    #         "cluster": labels[i],
-    #     }
-
-    # images = collection.find({}, {"_id": 1, "path": 1})
-    # images_list = list(images)
-
-    # for i, (key, value) in enumerate(metadata.items()):
-    #     image = images_list[i]
-    #     metadata[key]["imageId"] = str(image["_id"])
-
-    # for item in dict_bow:
-    #     for key_item, value_item in item.items():
-    #         for key_meta, value_meta in metadata.items():
-    #             if key_item == key_meta:
-    #                 metadata[key_meta].update({"Bow": item[key_item]["Bow"]})
-
-    # for value in metadata.values():
-    #     cluster_folder = str(value["cluster"])
-    #     path = os.path.join(folder_path, cluster_folder)
-    #     last_folder = os.path.split(folder_path)[-1]
-    #     file_name = f"metadata_{last_folder}.{cluster_folder}.txt"
-    #     file_path = os.path.join(path, file_name)
-    #     with open(file_path, "a") as file:
-    #         file.write(str(value) + "\n")
