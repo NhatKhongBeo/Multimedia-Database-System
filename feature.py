@@ -15,7 +15,7 @@ def average_BGR(image):
     return [avg_blue, avg_green, avg_red]
 
 
-def average_HSV(image):
+def average_HSV_simple(image):
     image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     avg_hue = image[:, :, 0].mean()
     avg_saturation = image[:, :, 1].mean()
@@ -23,6 +23,23 @@ def average_HSV(image):
 
     return avg_hue, avg_saturation, avg_value
 
+def average_HSV(image):
+    # Chuyển đổi ảnh từ BGR sang HSV
+    image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    
+    # Lọc ra những điểm ảnh không phải màu đen
+    lower_white = np.array([0, 0, 200])
+    upper_white = np.array([180, 30, 255])
+    mask = cv2.inRange(image_hsv, lower_white, upper_white)
+    
+    image_hsv_filtered = cv2.bitwise_and(image_hsv, image_hsv, mask=cv2.bitwise_not(mask))
+
+    # Tính trung bình của kênh H, S, V
+    avg_hue = image_hsv_filtered[:, :, 0][image_hsv_filtered[:, :, 0] > 0].mean()
+    avg_saturation = image_hsv_filtered[:, :, 1][image_hsv_filtered[:, :, 1] > 0].mean()
+    avg_value = image_hsv_filtered[:, :, 2][image_hsv_filtered[:, :, 2] > 0].mean()
+    
+    return avg_hue, avg_saturation, avg_value
 
 def convert_to_gray(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)

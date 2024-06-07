@@ -15,7 +15,7 @@ import cluster
 # collection = db.images
 
 
-ROOT_PATH = "D:\PTIT\CSDLDPT\Multimedia-Database-System\Mix"
+ROOT_PATH = "D:\\Nhat\\term_8\\MDS\\src\\Mix"
 NUM_CLUSTER = 11
 
 X = []
@@ -24,16 +24,18 @@ X = []
 # list_avg_value=[]
 list_image = []
 list_image_path = []
-for dirname, _, filenames in os.walk("D:\PTIT\CSDLDPT\Multimedia-Database-System\Mix"):
+for dirname, _, filenames in os.walk("D:\\Nhat\\term_8\\MDS\\src\\Mix"):
     for filename in filenames:
         image_path = os.path.join(dirname, filename)
-        list_image_path.append(image_path)
         image = cv2.imread(image_path)
+        #image_path = image_path.replace("_black", "")
+        list_image_path.append(image_path)
         list_image.append(image)
         avg_HSV = feature.average_HSV(image)
         # list_avg_hue.append(avg_HSV[0])
         # list_avg_saturation.append(avg_HSV[1])
         # list_avg_value.append(avg_HSV[2])
+        print(avg_HSV)
         X.append(avg_HSV)
 
 
@@ -43,7 +45,7 @@ def clustering():
     props_kmeans_1 = cluster.kmeans_1(X, list_image_path, NUM_CLUSTER)
     (labels, center_values) = props_kmeans_1
 
-    output_dir = "D:\PTIT\CSDLDPT\Multimedia-Database-System\kmeans1"
+    output_dir = "D:\\Nhat\\term_8\\MDS\\src\\kmeans"
 
     # Tạo đường dẫn đến file
     output_file = os.path.join(output_dir, "cluster_labels.txt")
@@ -64,14 +66,19 @@ def clustering():
     if os.path.exists(output_dir):
         for i in range(NUM_CLUSTER):
             folder_path = os.path.join(output_dir, str(i))
-            mod = (len(os.listdir(folder_path)) - 1) // 13
+            #mod = (len(os.listdir(folder_path)) - 1) // 13
+            mod = (len(os.listdir(folder_path))) / 15
+            if mod > round(mod):
+                mod = round(mod) + 1
+            else:
+                mod = round(mod)
             if mod > 1:
                 cluster.kmeans_2(folder_path, mod)
 
 
 def metadata():
 
-    for dirname, child_folders, filenames in os.walk("kmeans1"):
+    for dirname, child_folders, filenames in os.walk("kmeans"):
         # sorted_child_folders = sorted(child_folders, key=lambda x: int(x))
         # for folder in sorted_child_folders:
         #     path = os.path.join(dirname, folder)
@@ -122,5 +129,5 @@ def metadata():
     #     # get Bow
     # dict_bow = []
 
-# clustering()
-# metadata()
+clustering()
+metadata()
