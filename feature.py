@@ -5,7 +5,7 @@ from sklearn.cluster import KMeans
 from scipy.spatial.distance import cdist
 import pickle
 import os
-
+import pysift
 
 def average_BGR(image):
     avg_blue = image[:, :, 0].mean()
@@ -45,6 +45,9 @@ def convert_to_gray(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     return gray
 
+def SIFT_2(image):
+    _,descriptors = pysift.computeKeypointsAndDescriptors(image)
+    return descriptors
 
 def SIFT(image):
     sift = cv2.SIFT_create()
@@ -82,7 +85,7 @@ def get_feature_bow(path):
                 image = cv2.imread(image_path)
                 avg_HSV = average_HSV(image)
                 gray = convert_to_gray(image)
-                sift = SIFT(gray)
+                sift = SIFT_2(gray)
                 image_features[image_path] = [sift, avg_HSV]
                 # image_features[avg_HSV] = [sift,avg_HSV,image_path]
                 for i in sift:
@@ -113,7 +116,7 @@ def get_feature_bow(path):
 
 def get_image_feature(image, folder_path):
     gray = convert_to_gray(image)
-    sift = SIFT(gray)
+    sift = SIFT_2(gray)
 
     file_path = os.path.join(folder_path, "bow_dictionary.pkl")
 

@@ -29,7 +29,7 @@ def clustering():
     props_kmeans_1 = cluster.kmeans_1(X, list_image_path, NUM_CLUSTER)
     (labels, center_values) = props_kmeans_1
 
-    output_dir = "D:\\Nhat\\term_8\\MDS\\src\\kmeans2"
+    output_dir = "D:\\Nhat\\term_8\\MDS\\src\\kmeans"
 
     # Tạo đường dẫn đến file
     output_file = os.path.join(output_dir, "cluster_labels.txt")
@@ -62,7 +62,7 @@ def clustering():
 
 def metadata():
 
-    for dirname, child_folders, filenames in os.walk("kmeans2"):
+    for dirname, child_folders, filenames in os.walk("kmeans"):
 
         if len(child_folders) == 0:
             list_feature_image = []
@@ -76,4 +76,4 @@ def metadata():
                         file.write(f"{key}: {value}\n")
 
 clustering()
-# metadata()
+metadata()

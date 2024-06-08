@@ -16,7 +16,7 @@ def kmeans_1(X, list_image_path, num_cluster=11):
 
     pred_label = kmeans.predict(X)
 
-    output_dir = "D:\\Nhat\\term_8\\MDS\\src\\kmeans2"
+    output_dir = "D:\\Nhat\\term_8\\MDS\\src\\kmeans"
 
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -30,12 +30,12 @@ def kmeans_1(X, list_image_path, num_cluster=11):
         folder_name = str(i)
         os.mkdir(
             os.path.join(
-                "D:\\Nhat\\term_8\\MDS\\src\\kmeans2", folder_name
+                "D:\\Nhat\\term_8\\MDS\\src\\kmeans", folder_name
             )
         )
 
     for key, value in dict.items():
-        for dirname, child_folders, filenames in os.walk("kmeans2"):
+        for dirname, child_folders, filenames in os.walk("kmeans"):
             for folder in child_folders:
                 if str(value) == folder:
                     shutil.copy(key, os.path.join(dirname, folder))
@@ -51,7 +51,7 @@ def kmeans_2(folder_path, mod):
             image_path = os.path.join(folder_path, filename)
             list_image_path.append(image_path)
             image = cv2.imread(image_path)
-            avg_HSV = feature.average_HSV(image)
+            avg_HSV = feature.average_HSV_simple(image)
             images.append(avg_HSV)
 
     kmeans_second = KMeans(n_clusters=mod, random_state=0)
